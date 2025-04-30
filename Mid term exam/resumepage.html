@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Full Resume Builder</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="container mt-4">
+    <h1 class="text-center mb-4"> Resume Builder</h1>
+
+    <!-- Personal Info -->
+    <div class="form-section mb-4">
+      <h3>Personal Information</h3>
+      <input type="text" class="form-control mb-2" id="name" placeholder="Your Name">
+      <input type="email" class="form-control mb-2" id="email" placeholder="Your Email">
+      <input type="text" class="form-control mb-2" id="phone" placeholder="Your Phone">
+      <input type="file" class="form-control mb-2" id="photo">
+    </div>
+
+    <!-- Education -->
+    <div class="form-section mb-4">
+      <h3>Education</h3>
+      <div id="educationSection"></div>
+      <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addEducation()">+ Add Education</button>
+    </div>
+
+    <!-- Experience -->
+    <div class="form-section mb-4">
+      <h3>Work Experience</h3>
+      <div id="experienceSection"></div>
+      <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addExperience()">+ Add Experience</button>
+    </div>
+
+    <!-- Skills -->
+    <div class="form-section mb-4">
+      <h3>Skills</h3>
+      <div id="skillsSection"></div>
+      <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addSkill()">+ Add Skill</button>
+    </div>
+
+    <!-- Languages -->
+    <div class="form-section mb-4">
+      <h3>Languages</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Language</th>
+            <th>Proficiency</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="languageSection"></tbody>
+      </table>
+      <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addLanguage()">+ Add Language</button>
+    </div>
+
+    <!-- Certifications -->
+    <div class="form-section mb-4">
+      <h3>Certifications</h3>
+      <div id="certificationSection"></div>
+      <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addCertification()">+ Add Certification</button>
+    </div>
+
+    <button class="btn btn-primary mt-3" onclick="generateResume()">Generate Resume</button>
+
+    <div id="resumeOutput" class="mt-5 p-4 bg-light rounded shadow d-none"></div>
+  </div>
+
+  <script>
+    let eduCount = 0, expCount = 0, skillCount = 0, langCount = 0, certCount = 0;
+
+    function addEducation() {
+      eduCount++;
+      $('#educationSection').append(`
+        <div class="edu-block mb-2" id="edu${eduCount}">
+          <input type="text" class="form-control mb-1" placeholder="Institute Name">
+          <input type="text" class="form-control mb-1" placeholder="Degree / Level">
+          <input type="text" class="form-control mb-1" placeholder="Session (e.g. 2018-2022)">
+          <button type="button" class="btn btn-sm btn-danger mt-2" onclick="removeEducation(${eduCount})">Remove</button>
+        </div>
+      `);
+    }
+
+    function addExperience() {
+      expCount++;
+      $('#experienceSection').append(`
+        <div class="exp-block mb-2" id="exp${expCount}">
+          <input type="text" class="form-control mb-1" placeholder="Company Name">
+          <input type="text" class="form-control mb-1" placeholder="Position">
+          <textarea class="form-control mb-1" placeholder="Responsibilities"></textarea>
+          <button type="button" class="btn btn-sm btn-danger mt-2" onclick="removeExperience(${expCount})">Remove</button>
+        </div>
+      `);
+    }
+
+    function addSkill() {
+      skillCount++;
+      $('#skillsSection').append(`
+        <div class="skill-block mb-2" id="skill${skillCount}">
+          <input type="text" class="form-control mb-1" placeholder="Skill">
+          <button type="button" class="btn btn-sm btn-danger mt-2" onclick="removeSkill(${skillCount})">Remove</button>
+        </div>
+      `);
+    }
+
+    function addLanguage() {
+      langCount++;
+      $('#languageSection').append(`
+        <tr class="lang-block" id="lang${langCount}">
+          <td><input type="text" class="form-control" placeholder="Language"></td>
+          <td>
+            <select class="form-control">
+              <option value="">Proficiency</option>
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Fluent</option>
+              <option>Native</option>
+            </select>
+          </td>
+          <td><button type="button" class="btn btn-sm btn-danger" onclick="removeLanguage(${langCount})">Remove</button></td>
+        </tr>
+      `);
+    }
+
+    function addCertification() {
+      certCount++;
+      $('#certificationSection').append(`
+        <div class="cert-block mb-2" id="cert${certCount}">
+          <input type="text" class="form-control mb-1" placeholder="Certification Title">
+          <input type="text" class="form-control mb-1" placeholder="Issuing Organization">
+          <input type="text" class="form-control mb-1" placeholder="Year / Duration">
+          <button type="button" class="btn btn-sm btn-danger mt-2" onclick="removeCertification(${certCount})">Remove</button>
+        </div>
+      `);
+    }
+
+    function removeEducation(id) {
+      $(`#edu${id}`).remove();
+    }
+
+    function removeExperience(id) {
+      $(`#exp${id}`).remove();
+    }
+
+    function removeSkill(id) {
+      $(`#skill${id}`).remove();
+    }
+
+    function removeLanguage(id) {
+      $(`#lang${id}`).remove();
+    }
+
+    function removeCertification(id) {
+      $(`#cert${id}`).remove();
+    }
+
+    function generateResume() {
+      const name = $('#name').val();
+      const email = $('#email').val();
+      const phone = $('#phone').val();
+      const photo = $('#photo')[0].files[0];
+      const photoURL = photo ? URL.createObjectURL(photo) : "";
+
+      let educationHTML = "";
+      $('#educationSection .edu-block').each(function () {
+        const institute = $(this).find('input').eq(0).val();
+        const degree = $(this).find('input').eq(1).val();
+        const session = $(this).find('input').eq(2).val();
+        educationHTML += `<p><strong>${degree}</strong> at ${institute} (${session})</p>`;
+      });
+
+      let experienceHTML = "";
+      $('#experienceSection .exp-block').each(function () {
+        const company = $(this).find('input').eq(0).val();
+        const position = $(this).find('input').eq(1).val();
+        const responsibilities = $(this).find('textarea').val();
+        experienceHTML += `
+          <p><strong>${position}</strong> at ${company}</p>
+          <p>${responsibilities}</p>
+        `;
+      });
+
+      let skillsHTML = "<ul>";
+      $('#skillsSection input').each(function () {
+        const skill = $(this).val();
+        if (skill) skillsHTML += `<li>${skill}</li>`;
+      });
+      skillsHTML += "</ul>";
+
+      let languagesHTML = `
+        <table class="table table-bordered">
+          <thead>
+            <tr><th>Language</th><th>Proficiency</th></tr>
+          </thead>
+          <tbody>
+      `;
+      $('#languageSection .lang-block').each(function () {
+        const lang = $(this).find('input').val();
+        const prof = $(this).find('select').val();
+        if (lang && prof) {
+          languagesHTML += `<tr><td>${lang}</td><td>${prof}</td></tr>`;
+        }
+      });
+      languagesHTML += "</tbody></table>";
+
+      let certHTML = "";
+      $('#certificationSection .cert-block').each(function () {
+        const title = $(this).find('input').eq(0).val();
+        const org = $(this).find('input').eq(1).val();
+        const year = $(this).find('input').eq(2).val();
+        certHTML += `<p><strong>${title}</strong> by ${org} (${year})</p>`;
+      });
+
+      const resumeHTML = `
+        <h2>${name}</h2>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        ${photoURL ? `<img src="${photoURL}" alt="Photo" style="width:150px;border-radius:8px;">` : ""}
+        <hr>
+        <h3>Education</h3>${educationHTML}
+        <hr>
+        <h3>Work Experience</h3>${experienceHTML}
+        <hr>
+        <h3>Skills</h3>${skillsHTML}
+        <hr>
+        <h3>Languages</h3>${languagesHTML}
+        <hr>
+        <h3>Certifications</h3>${certHTML}
+      `;
+
+      $('#resumeOutput').html(resumeHTML).removeClass('d-none');
+    }
+
+    $(document).ready(function() {
+      addEducation();
+      addExperience();
+      addSkill();
+      addLanguage();
+      addCertification();
+    });
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const resumeHTML = document.getElementById('resumeOutput').innerHTML;
+      
+      doc.html(resumeHTML, {
+        callback: function (doc) {
+          doc.save('resume.pdf');
+        },
+        x: 10,
+        y: 10,
+        width: 180,
+        windowWidth: 800
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Resume Builder Clone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap & Google Fonts -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: #fff;
+      padding: 20px 0;
+      border-bottom: 3px solid #bd7a43;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 24px;
+      color: #bd8032;
+    }
+    .nav-link {
+      font-weight: 500;
+      color: #333 !important;
+      margin: 0 10px;
+      transition: color 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #9b3869 !important;
+    }
+    .btn-gradient {
+      background: linear-gradient(to right, #ff6a00, #ee0979);
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      font-weight: bold;
+      border-radius: 30px;
+      transition: transform 0.3s;
+    }
+    .btn-gradient:hover {
+      transform: scale(1.05);
+    }
+    .btn-outline {
+      border: 2px solid #ee0979;
+      color: #ee0979;
+      background-color: white;
+      padding: 10px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .btn-outline:hover {
+      background-color: #ee0979;
+      color: white;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 80px 20px;
+      background: linear-gradient(to right, #fefefe, #f5f5ff);
+    }
+    .hero-text h1 {
+      font-size: 45px;
+      font-weight: 700;
+      color: #1a202c;
+    }
+    .hero-text p {
+      font-size: 18px;
+      margin-top: 15px;
+      color: #555;
+    }
+    .stat-box span {
+      display: block;
+      color: #7c3aed;
+      font-size: 26px;
+    }
+
+    /* Carousel & Testimonials */
+    .carousel-item {
+      transition: transform 1s ease, opacity 1s ease;
+    }
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-color: #7c3aed;
+    }
+    .blockquote-footer {
+      color: #777;
+    }
+
+    /* FAQ Section */
+    .accordion .card-header a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+      width: 100%;
+      padding: 15px;
+    }
+    .accordion .card-header a:hover {
+      background: #f9f9f9;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #e5e5f7;
+      padding: 30px 0;
+      font-size: 14px;
+    }
+
+    /* Animation */
+    .fadeInUp {
+      animation: fadeInUp 1s ease-out forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 767.98px) {
+      .hero-text h1 {
+        font-size: 32px;
+      }
+      .hero-text p {
+        font-size: 16px;
+      }
+      .stat-box span {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="as a guest.html">Resume Builder</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" 
+              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="example.html">Resume Examples</a></li>
+          <li class="nav-item"><a class="nav-link" href="resumepage.html">Templates</a></li>
+          <li class="nav-item"><a class="nav-link" href="as a guest.html">As Guest</a></li>
+        </ul>
+      </div>
+      <a href="registration.html" class="btn btn-gradient btn-lg">Login/Signup</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <!-- Image Column -->
+        <div class="col-md-6 text-center mb-4 fadeInUp">
+          <img src="cv.webp" alt="Resume Preview" class="img-fluid">
+        </div>
+        <!-- Text Column -->
+        <div class="col-md-6 hero-text fadeInUp">
+          <h1>Create a Resume That Stands Out</h1>
+          <p>Build your resume in minutes using top templates trusted by professionals worldwide.</p>
+          <div class="mt-4">
+            <a href="registration.html" class="btn btn-gradient mr-2">Build My Resume</a>
+            <br> <br>
+            <button class="btn btn-outline">Upload Resume</button>
+          </div>
+          <div class="row stat-box mt-5">
+            <div class="col-6">
+              <span>↑ 38%</span>
+              more interviews
+            </div>
+            <div class="col-6">
+              <span>↑ 23%</span>
+              job offer increase
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Summary -->
+  <section class="py-5 text-center bg-white">
+    <div class="container">
+      <h2 class="mb-3 font-weight-bold">Why Job Seekers Love Us</h2>
+      <p>
+        ✨ 100+ modern resume templates<br>
+        ✨ Easy editing & download<br>
+        ✨ Get hired faster
+      </p>
+    </div>
+  </section>
+
+  <!-- Template Previews -->
+  <section class="templates text-center bg-light py-5">
+    <div class="container">
+      <h2 class="text-center mb-5 font-weight-bold">Choose Your Template</h2>
+      <div class="row mt-4">
+        <div class="col-md-4 mb-4">
+          <img src="resume.png" class="img-fluid" alt="Template 1">
+        </div>
+        <div class="col-md-4 mb-4">
+          <img src="Student-Resume-Template.jpg" class="img-fluid" alt="Template 2">
+        </div>
+        <div class="col-md-4 mb-4">
+          <img src="resume 3.jpg" class="img-fluid" alt="Template 3">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonial-section py-5">
+    <div class="container">
+      <h2 class="text-center mb-5 font-weight-bold">What Our Users Say</h2>
+      <div id="testimonialCarousel" class="carousel slide carousel-fade" data-ride="carousel" data-interval="5000">
+        <div class="carousel-inner text-center">
+          <div class="carousel-item active">
+            <img src="https://i.pravatar.cc/100?img=47" class="rounded-circle mb-3" alt="Sarah">
+            <blockquote class="blockquote">
+              <p class="font-italic">"This resume builder helped me get my dream job. Super easy to use and the templates are stunning!"</p>
+            </blockquote>
+            <div class="text-warning mb-2">★★★★★</div>
+            <footer class="blockquote-footer">Sarah Khan, <cite>Marketing Executive</cite></footer>
+          </div>
+          <div class="carousel-item">
+            <img src="https://i.pravatar.cc/100?img=12" class="rounded-circle mb-3" alt="Ahmed">
+            <blockquote class="blockquote">
+              <p class="font-italic">"I love how professional my resume looks now. It's user-friendly and better than paid services."</p>
+            </blockquote>
+            <div class="text-warning mb-2">★★★★☆</div>
+            <footer class="blockquote-footer">Ahmed Raza, <cite>Software Engineer</cite></footer>
+          </div>
+          <div class="carousel-item">
+            <img src="https://i.pravatar.cc/100?img=65" class="rounded-circle mb-3" alt="Maria">
+            <blockquote class="blockquote">
+              <p class="font-italic">"Beautiful layouts and very intuitive. My interviews increased right after using this site!"</p>
+            </blockquote>
+            <div class="text-warning mb-2">★★★★★</div>
+            <footer class="blockquote-footer">Maria Ali, <cite>HR Specialist</cite></footer>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#testimonialCarousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon rounded-circle p-3" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#testimonialCarousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon rounded-circle p-3" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-5 bg-white">
+    <div class="container">
+      <h2 class="text-center mb-5 font-weight-bold">Frequently Asked Questions</h2>
+      <div id="accordion">
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+              <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Is the resume builder free to use?
+              </a>
+            </h5>
+          </div>
+          <div id="collapseOne" class="collapse show" data-parent="#accordion">
+            <div class="card-body">
+              Yes! Our resume builder is completely free to use for all templates and downloads.
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+              <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Can I download my resume as a PDF?
+              </a>
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+              Absolutely! You can download your resume in PDF format with a single click.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    <div class="container">
+      <p>&copy; MAHA NISAR 2025 Resume Builder. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.5.0/html-docx.js"></script>
+    <style>
+        /* Customize form appearance */
+        .container {
+            max-width: 900px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        .form-section h3 {
+            color: #007bff;
+            font-size: 1.2rem;
+        }
+        button {
+            margin-top: 10px;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mt-5">Resume Builder</h1>
+    <div class="form-section mt-5">
+        <h3>Personal Information</h3>
+        <form id="resumeForm">
+            <div class="row">
+                <div class="col-12 col-md-6 mb-3">
+                    <input type="text" class="form-control" id="name" placeholder="Your Name">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <input type="email" class="form-control" id="email" placeholder="Your Email">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <input type="text" class="form-control" id="phone" placeholder="Your Phone">
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <input type="file" class="form-control" id="photo" accept="image/*">
+                </div>
+            </div>
+            <h3 class="mt-4">Work Experience</h3>
+            <div id="experienceSection"></div>
+            <button type="button" class="btn btn-primary mt-2" onclick="addExperience()">Add Experience</button>
+            <h3 class="mt-4">Projects</h3>
+            <div id="projectSection"></div>
+            <button type="button" class="btn btn-primary mt-2" onclick="addProject()">Add Project</button>
+            <div class="mt-3">
+                <button type="button" class="btn btn-info" onclick="previewResume()">Preview Resume</button>
+                <button type="button" class="btn btn-success" onclick="generateResume()">Generate Resume</button>
+                <button type="button" class="btn btn-danger" onclick="downloadWord()">Export to Word</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Resume Output (Hidden initially) -->
+    <div id="resumeOutput" class="d-none mt-5">
+        <div class="resume-container">
+            <h2 id="resumeName"></h2>
+            <p id="resumeEmail"></p>
+            <p id="resumePhone"></p>
+            <img id="resumePhoto" src="" alt="Your Photo" class="img-thumbnail" width="150">
+            <div id="experienceOutput"></div>
+            <div id="projectsOutput"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateInputs() {
+        const name = $('#name').val();
+        const email = $('#email').val();
+        const phone = $('#phone').val();
+
+        if (!name || !email || !phone) {
+            alert("Please fill in all the required fields.");
+            return false;
+        }
+        return true;
+    }
+
+    function addExperience() {
+        $('#experienceSection').append(`
+            <div class="experience-block mb-2">
+                <input type="text" class="form-control mb-2" placeholder="Job Title">
+                <input type="text" class="form-control mb-2" placeholder="Company Name">
+                <textarea class="form-control mb-2" placeholder="Job Description"></textarea>
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeExperience(this)">Remove</button>
+            </div>
+        `);
+    }
+
+    function removeExperience(button) {
+        $(button).parent().remove();
+    }
+
+    function addProject() {
+        $('#projectSection').append(`
+            <div class="project-block mb-2">
+                <input type="text" class="form-control mb-2" placeholder="Project Title">
+                <textarea class="form-control mb-2" placeholder="Project Description"></textarea>
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeProject(this)">Remove</button>
+            </div>
+        `);
+    }
+
+    function removeProject(button) {
+        $(button).parent().remove();
+    }
+
+    function previewResume() {
+        $('#resumeOutput').removeClass('d-none');
+        $('#resumeName').text($('#name').val());
+        $('#resumeEmail').text($('#email').val());
+        $('#resumePhone').text($('#phone').val());
+        
+        const photo = $('#photo')[0].files[0];
+        const photoURL = photo ? URL.createObjectURL(photo) : "default-avatar.jpg";
+        $('#resumePhoto').attr('src', photoURL);
+
+        const experienceBlocks = $('.experience-block');
+        let experienceHTML = '';
+        experienceBlocks.each(function() {
+            experienceHTML += `
+                <div class="experience">
+                    <h5>${$(this).find('input').eq(0).val()}</h5>
+                    <p><strong>${$(this).find('input').eq(1).val()}</strong></p>
+                    <p>${$(this).find('textarea').val()}</p>
+                </div>
+            `;
+        });
+        $('#experienceOutput').html(experienceHTML);
+
+        const projectBlocks = $('.project-block');
+        let projectHTML = '';
+        projectBlocks.each(function() {
+            projectHTML += `
+                <div class="project">
+                    <h5>${$(this).find('input').eq(0).val()}</h5>
+                    <p>${$(this).find('textarea').val()}</p>
+                </div>
+            `;
+        });
+        $('#projectsOutput').html(projectHTML);
+    }
+
+    function generateResume() {
+        if (!validateInputs()) return;
+
+        // Collect the resume data and display it in a preview or download
+        alert("Resume generated!");
+    }
+
+    function downloadWord() {
+        const resumeHTML = document.getElementById('resumeOutput').innerHTML;
+        const converted = htmlDocx.asBlob(resumeHTML);
+        const blob = new Blob([converted], { type: 'application/msword' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'resume.docx';
+        link.click();
+    }
+</script>
+</body>
+</html>

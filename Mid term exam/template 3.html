@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colorful CV Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f0f8ff;
+    }
+
+    h1 {
+      color: #4a90e2;
+      margin-top: 20px;
+    }
+
+    .container {
+      display: flex;
+      gap: 2rem;
+      margin: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    form {
+      width: 350px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input, textarea, select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #4a90e2;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .dynamic-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dynamic-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .dynamic-group input, .dynamic-group textarea {
+      flex: 1;
+    }
+
+    #cv {
+      background: linear-gradient(135deg, #6dd5ed, #2193b0);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      width: 400px;
+      font-size: 16px;
+    }
+
+    .section {
+      margin-bottom: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid white;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Colorful CV Generator</h1>
+  <div class="container">
+    <form id="cvForm">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="text" id="phone" placeholder="Phone" required />
+      <input type="url" id="website" placeholder="Website URL" />
+      <input type="file" id="photo" accept="image/*" />
+      <textarea id="summary" placeholder="Small Introduction" required></textarea>
+
+      <div class="section">
+        <label>Skills</label>
+        <div class="dynamic-section" id="skillsSection">
+          <div class="dynamic-group"><input type="text" name="skills[]" placeholder="Skill" /><button type="button" onclick="removeField(this)">Remove</button></div>
+        </div>
+        <button type="button" onclick="addField('skillsSection', 'text', 'skills[]', 'Skill')">Add Skill</button>
+      </div>
+
+      <div class="section">
+        <label>Education</label>
+        <div class="dynamic-section" id="educationSection">
+          <div class="dynamic-group"><textarea name="education[]" placeholder="Education Details"></textarea><button type="button" onclick="removeField(this)">Remove</button></div>
+        </div>
+        <button type="button" onclick="addField('educationSection', 'textarea', 'education[]', 'Education Details')">Add Education</button>
+      </div>
+
+      <div class="section">
+        <label>Experience</label>
+        <div class="dynamic-section" id="experienceSection">
+          <div class="dynamic-group"><textarea name="experience[]" placeholder="Experience Details"></textarea><button type="button" onclick="removeField(this)">Remove</button></div>
+        </div>
+        <button type="button" onclick="addField('experienceSection', 'textarea', 'experience[]', 'Experience Details')">Add Experience</button>
+      </div>
+
+      <div class="section">
+        <label>Languages</label>
+        <div class="dynamic-section" id="languageTable">
+          <div class="dynamic-group">
+            <input type="text" name="language[]" placeholder="Language" />
+            <select name="proficiency[]">
+              <option value="Basic">Basic</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Fluent">Fluent</option>
+            </select>
+            <button type="button" onclick="removeField(this)">Remove</button>
+          </div>
+        </div>
+        <button type="button" onclick="addLanguage()">Add Language</button>
+      </div>
+
+      <button type="submit">Generate CV</button>
+    </form>
+
+    <div id="cv" style="display: none">
+      <div class="section" id="cvPhoto"></div>
+      <div class="section" id="cvName"></div>
+      <div class="section" id="cvEmail"></div>
+      <div class="section" id="cvPhone"></div>
+      <div class="section" id="cvWebsite"></div>
+      <div class="section" id="cvSummary"></div>
+      <div class="section" id="cvSkills"></div>
+      <div class="section" id="cvEducation"></div>
+      <div class="section" id="cvExperience"></div>
+      <div class="section" id="cvLanguages"></div>
+    </div>
+  </div>
+
+  <button onclick="downloadCV()" style="margin-top: 10px;">Download CV as PDF</button>
+
+
+  <script>
+    function addField(sectionId, type, name, placeholder) {
+      const container = document.getElementById(sectionId);
+      const div = document.createElement('div');
+      div.className = 'dynamic-group';
+
+      if (type === 'textarea') {
+        div.innerHTML = `<textarea name="${name}" placeholder="${placeholder}"></textarea><button type="button" onclick="removeField(this)">Remove</button>`;
+      } else {
+        div.innerHTML = `<input type="${type}" name="${name}" placeholder="${placeholder}" /><button type="button" onclick="removeField(this)">Remove</button>`;
+      }
+
+      container.appendChild(div);
+    }
+
+    function addLanguage() {
+      const container = document.getElementById('languageTable');
+      const div = document.createElement('div');
+      div.className = 'dynamic-group';
+      div.innerHTML = `<input type="text" name="language[]" placeholder="Language" />
+                       <select name="proficiency[]">
+                         <option value="Basic">Basic</option>
+                         <option value="Intermediate">Intermediate</option>
+                         <option value="Fluent">Fluent</option>
+                       </select>
+                       <button type="button" onclick="removeField(this)">Remove</button>`;
+      container.appendChild(div);
+    }
+
+    function removeField(button) {
+      button.parentElement.remove();
+    }
+
+    document.getElementById('cvForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+
+      document.getElementById('cv').style.display = 'block';
+      document.getElementById('cvName').innerHTML = `<h2>${form.name.value}</h2>`;
+      document.getElementById('cvEmail').innerHTML = `<strong>Email:</strong> ${form.email.value}`;
+      document.getElementById('cvPhone').innerHTML = `<strong>Phone:</strong> ${form.phone.value}`;
+      document.getElementById('cvWebsite').innerHTML = `<strong>Website:</strong> ${form.website.value}`;
+      document.getElementById('cvSummary').innerHTML = `<strong>Summary:</strong> ${form.summary.value}`;
+
+      // Skills
+      const skills = Array.from(form.querySelectorAll('[name="skills[]"]')).map(el => el.value).filter(Boolean);
+      document.getElementById('cvSkills').innerHTML = `<strong>Skills:</strong> ${skills.join(', ')}`;
+
+      // Education
+      const education = Array.from(form.querySelectorAll('[name="education[]"]')).map(el => `<li>${el.value}</li>`).join('');
+      document.getElementById('cvEducation').innerHTML = `<strong>Education:</strong><ul>${education}</ul>`;
+
+      // Experience
+      const experience = Array.from(form.querySelectorAll('[name="experience[]"]')).map(el => `<li>${el.value}</li>`).join('');
+      document.getElementById('cvExperience').innerHTML = `<strong>Experience:</strong><ul>${experience}</ul>`;
+
+      // Languages
+      const languages = form.querySelectorAll('[name="language[]"]');
+      const proficiency = form.querySelectorAll('[name="proficiency[]"]');
+      let tableHTML = '<strong>Languages:</strong><table><tr><th>Language</th><th>Proficiency</th></tr>';
+      for (let i = 0; i < languages.length; i++) {
+        if (languages[i].value) {
+          tableHTML += `<tr><td>${languages[i].value}</td><td>${proficiency[i].value}</td></tr>`;
+        }
+      }
+      tableHTML += '</table>';
+      document.getElementById('cvLanguages').innerHTML = tableHTML;
+
+      // Photo
+      const photo = form.photo.files[0];
+      if (photo) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('cvPhoto').innerHTML = `<img src="${e.target.result}" style="max-width: 100px; border-radius: 50%;" />`;
+        }
+        reader.readAsDataURL(photo);
+      }
+    });
+
+    function downloadCV() {
+  const element = document.getElementById('cv');
+  const opt = {
+    margin:       0.5,
+    filename:     'my_cv.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2 },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(element).save();
+}
+
+  </script>
+</body>
+</html>
